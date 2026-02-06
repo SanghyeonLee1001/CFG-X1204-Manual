@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>CFG-X1204 Hardware Manual</title>
+    <style>
+        :root { --primary-color: #2c3e50; --accent-color: #e67e22; --sidebar-bg: #f8f9fa; --border-color: #dee2e6; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; display: flex; margin: 0; line-height: 1.6; color: #333; background: #fff; }
+        
+        /* 사이드바 스타일 */
+        .sidebar { width: 320px; height: 100vh; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); position: fixed; padding: 25px; overflow-y: auto; box-sizing: border-box; }
+        .sidebar h2 { font-size: 1.2rem; color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 20px; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar li { margin: 10px 0; }
+        .sidebar a { text-decoration: none; color: #555; font-size: 0.9rem; transition: 0.2s; }
+        .sidebar a:hover { color: var(--accent-color); padding-left: 5px; }
+        .sidebar .sub-item { padding-left: 15px; font-size: 0.85rem; }
+
+        /* 메인 컨텐츠 스타일 */
+        .main-content { margin-left: 340px; padding: 60px; max-width: 1000px; box-sizing: border-box; }
+        header { border-bottom: 1px solid var(--border-color); margin-bottom: 50px; padding-bottom: 20px; }
+        .confidential { color: #e74c3c; font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; }
+        h1 { font-size: 2.8rem; color: var(--primary-color); margin: 10px 0; }
+        h2 { font-size: 2rem; color: var(--primary-color); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 60px; }
+        h3 { font-size: 1.5rem; color: #34495e; margin-top: 40px; border-left: 5px solid var(--accent-color); padding-left: 15px; }
+        h4 { font-size: 1.2rem; color: var(--accent-color); margin-top: 25px; }
+
+     /* 이미지 스타일 보정: 크기 제한 및 중앙 정렬 */
+.manual-img {
+    /* max-width: 750px; <-- 이 부분을 제거하거나 아래 클래스들이 덮어쓰게 합니다 */
+    /* width: 100%; <-- 이 부분을 제거하거나 아래 클래스들이 덮어쓰게 합니다 */
+    height: auto;
+    display: block;
+    margin: 30px auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    background-color: #fff;
+}
+
+/* --- 새로 추가할 이미지 크기 조절용 유틸리티 클래스 --- */
+
+/* 큰 이미지용 (기존 구조도, 블록도 등) */
+.w-large { width: 100%; max-width: 800px; }
+
+/* 중간 크기용 (26핀 커넥터 등) */
+.w-medium { width: 100%; max-width: 500px; }
+
+/* 작은 이미지용 (6핀 파워 커넥터 등) - 요청하신 부분! */
+.w-small { width: 100%; max-width: 300px; }
+
+/* 이미지 설명(캡션) 스타일 추가 (선택 사항) */
+.img-caption {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: -20px;
+    margin-bottom: 30px;
+}
+        /* 테이블 스타일 */
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 0.9rem; border: 1px solid var(--border-color); }
+        th, td { border: 1px solid var(--border-color); padding: 12px 15px; text-align: left; }
+        th { background: #f1f3f5; font-weight: 700; color: #2c3e50; }
+        tr:nth-child(even) { background: #fafafa; }
+
+        /* 알림 박스 스타일 */
+        .box { padding: 20px; border-left: 6px solid; margin: 30px 0; border-radius: 4px; font-size: 0.95rem; }
+        .caution { background: #fff9db; border-color: #fab005; color: #856404; }
+        .warning { background: #fff4e6; border-color: #fd7e14; color: #d9480f; }
+        .danger { background: #fff5f5; border-color: #ff6b6b; color: #c92a2a; }
+        .note { background: #f1f3f5; border-color: #adb5bd; color: #495057; }
+
+        footer { margin-top: 100px; padding-top: 30px; border-top: 1px solid #eee; font-size: 0.9rem; color: #777; text-align: center; }
+
+        @media print { .sidebar { display: none; } .main-content { margin-left: 0; padding: 20px; } }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <h2>CFG-X1204 Manual</h2>
+    <ul>
+        <li><a href="#rev">Revision History</a></li>
+        
+        <li><a href="#sec1">1. Precautions</a>
+            <ul class="sub-item">
+                <li><a href="#sec1-1">1.1 Safety</a></li>
+                <li><a href="#sec1-2">1.2 Warranty</a></li>
+            </ul>
+        </li>
+
+        <li><a href="#sec2">2. Introduction</a></li>
+
+        <li><a href="#sec3">3. Hardware</a>
+            <ul class="sub-item">
+                <li><a href="#sec3-1">3.1 Specification</a></li>
+                <li><a href="#sec3-2">3.2 Structure</a></li>
+                <li><a href="#sec3-3">3.3 Block Diagram</a></li>
+                <li><a href="#sec3-4">3.4 Connector Pinout</a>
+                    <ul class="sub-item" style="padding-left: 15px; list-style-type: circle;">
+                        <li><a href="#sec3-4-1">3.4.1 Data Connector</a></li>
+                        <li><a href="#sec3-4-2">3.4.2 External I/O</a></li>
+                        <li><a href="#sec3-4-3">3.4.3 Auxiliary Power</a></li>
+                    </ul>
+                </li>
+                <li><a href="#sec3-5">3.5 LED Indicators</a></li>
+                <li><a href="#sec3-6">3.6 Electrical Specification</a></li>
+            </ul>
+        </li>
+
+        <li><a href="#sec4">4. Environmental Condition</a>
+            <ul class="sub-item">
+                <li><a href="#sec4-1">4.1 Storage Condition</a></li>
+                <li><a href="#sec4-2">4.2 Operating Condition</a></li>
+            </ul>
+        </li>
+
+        <li><a href="#sec5">5. System Setup & Compliance</a>
+            <ul class="sub-item">
+                <li><a href="#sec5-1">5.1 Software Integration</a></li>
+                <li><a href="#sec5-2">5.2 Cable & Distance</a></li>
+                <li><a href="#sec5-3">5.3 PCIe & BIOS Settings</a></li>
+                <li><a href="#sec5-4">5.4 Camera Topology</a></li>
+                <li><a href="#sec5-5">5.5 Certifications</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+    <main class="main-content">
+        <header>
+            <div class="confidential">CONFIDENTIAL</div>
+            <h1>CFG-X1204</h1>
+            <p>High Performance CoaXPress 2.1 Frame Grabber Hardware Manual</p>
+            <p><strong>Version:</strong> Rev.1.1 | <strong>Date:</strong> 2025. 06. 24</p>
+        </header>
+
+        <section id="rev">
+            <h2>REVISION HISTORY</h2>
+            <table>
+                <thead>
+                    <tr><th>Revision</th><th>Date</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1.0</td><td>2026. 02. 10</td><td>Initial Release</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="sec1">
+            <h2>1. Precautions</h2>
+            <h3 id="sec1-1">1.1 Safety</h3>
+            <div class="box caution">
+                <strong>[주의 - Caution]</strong>
+                <ul>
+                    <li>제품과 관련된 법규 및 안전 규정을 준수하십시오.</li>
+                    <li>문제가 발생하면 즉시 사용을 중단하고 점검을 받으십시오.</li>
+                    <li>결함이 있거나 손상된 제품을 무리하게 작동시키지 마십시오.</li>
+                    <li>지정된 전압 범위 내에서 안정적인 전원을 공급하십시오.</li>
+                    <li>유지보수 및 수리는 크래비스(Crevis) 기술지원팀에 문의하십시오.</li>
+                </ul>
+            </div>
+
+            <div class="box warning">
+                <strong>[경고 - Warning]</strong> 회피하지 않을 경우 신체적 부상이나 제품 및 주변 환경의 손상을 초래할 수 있는 상황을 나타냅니다.
+            </div>
+
+            <div class="box danger">
+                <strong>[위험 - Danger]</strong> 회피하지 않을 경우 사망이나 심각한 부상을 초래할 수 있는 긴박한 위험 상황입니다.
+            </div>
+
+<h3 id="sec1-2">1.2 Warranty</h3>
+<p>CFG-X1204는 크래비스(Crevis)의 엄격한 품질 관리 및 검사 시스템을 거쳐 제조되었습니다.</p>
+
+<div class="box note">
+    <strong>무상 보증 서비스 (Warranty Service)</strong>
+    <ul>
+        <li><strong>보증 기간:</strong> 제품 구매일로부터 <strong>2년 동안</strong> 재료 및 공정상의 결함에 대해 무상 수리를 보증합니다.</li>
+        <li>보증 기간 내 정상적인 사용 상태에서 발생한 하자에 대해서는 무상 수리 서비스를 제공합니다.</li>
+    </ul>
+</div>
+
+<h4>보증 제외 사항 (Warranty Exclusions)</h4>
+<p>다음과 같은 사유로 발생한 문제 및 손상에 대해서는 보증 서비스가 적용되지 않습니다:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>분류</th>
+            <th>상세 제외 사유 (Exclusion Details)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>사용자 과실 및 오용</strong></td>
+            <td>
+                <ul>
+                    <li>부적절한 입력 전압(Line Voltages) 또는 규격 외 퓨즈 사용 </li>
+                    <li>불충분한 환기(Ventilation) 또는 제품 지침 미준수 </li>
+                    <li>승인되지 않은 임의 개조 및 제품 구성 변경 </li>
+                    <li>사용자 부주의에 의한 오용 및 학대(Abuse) </li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>외부 요인 및 환경</strong></td>
+            <td>
+                <ul>
+                     <li>타사 장치, 불량 부품 또는 비정품 액세서리 사용으로 인한 문제</li>
+                     <li>천재지변(낙뢰, 홍수, 지진, 태풍 등)에 의한 손상</li>
+                     <li>부적절한 포장으로 인한 운송 중 파손</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>일반 및 소모성 항목</strong></td>
+            <td>
+                <ul>
+                     <li>정상적인 사용에 따른 마모 및 노후(Normal wear and tear)</li>
+                     <li>필터, 소모성 부품 또는 수명이 정해진 컴포넌트</li>
+                     <li>공식 대리점 및 판매처를 통하지 않은 구매 제품</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box caution">
+     <strong>보증 외 서비스 안내:</strong> 보증 기간이 만료되었거나 보증 제외 사항에 해당하는 경우, 수리 비용 및 왕복 운송 비용(Freight costs)은 고객이 부담해야 합니다.
+</div>
+        </section>
+
+        <section id="sec2">
+            <h2>2. Introduction</h2>
+            <p><strong>CFG-X1204</strong>는 최신 CoaXPress 2.1 표준을 지원하며 고속 데이터 전송에 최적화된 프레임 그래버입니다.</p>
+            <ul>
+                <li>PCI Express Gen3 x8Lane 인터페이스를 지원하여 최대 대역폭을 확보합니다.</li>
+                <li>GenICam 표준 호환으로 다양한 비전 소프트웨어와 쉽게 연동됩니다.</li>
+                <li>채널당 최대 12.5Gbps의 데이터 전송률을 제공하며 멀티 카메라 환경을 지원합니다.</li>
+            </ul>
+        </section>
+
+        <section id="sec3">
+            <h2>3. Hardware</h2>
+            <h3 id="sec3-1">3.1 Specification</h3>
+            <table>
+                <thead>
+                    <tr><th>Item</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>PC Interface</td><td>PCI Express Gen3, 8-Lane</td></tr>
+                    <tr><td>Camera Interface</td><td>CoaXPress 2.1</td></tr>
+                    <tr><td>HOST Connector</td><td>4 x Micro-BNC (impedance 75Ω)</td></tr>
+                    <tr><td>Power Support</td><td>PoCXP 지원 (17W per connector, 24V DC regulated)</td></tr>
+                    <tr><td>GPIO Connector</td><td>26-Pin D-sub Connector</td></tr>
+                    <tr><td>Dimensions</td><td>132 x 103 mm (PCB)</td></tr>
+                </tbody>
+            </table>
+
+            <h3 id="sec3-2">3.2 Structure</h3>
+            <p>CFG-X1204의 물리적 구조 및 주요 구성 요소의 배치입니다.</p>
+            
+            <img src="images/structure.png" alt="CFG-X1204 Hardware Structure" class="manual-img w-large">
+	<p class="img-caption">Figure 1. CFG-X1204 외관 및 주요 부칭</p>
+
+            <h3 id="sec3-3">3.3 Block Diagram</h3>
+            <p>제품 내부의 데이터 흐름 및 주요 하드웨어 컴포넌트 간의 연결 블록도입니다.</p>
+            
+            <img src="images/block diagram.png" alt="CFG-X1204 Block Diagram" class="manual-img w-large">
+	<p class="img-caption">Figure 2. 시스템 내부 구성 블록 다이어그램</p>
+
+            <h3 id="sec3-4">3.4 Connector Pinout</h3>
+<h4 id="sec3-4-1">3.4.1 CoaXPress Data Connector (Micro-BNC)</h4>
+<p>CFG-X1204의 고속 데이터 전송을 위한 CoaXPress 호스트 커넥터 사양입니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>구분 (Item)</th>
+            <th>상세 사양 (Description)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Connector Name</th>
+            <td>CoaXPress HOST</td>
+        </tr>
+        <tr>
+            <th>Connector Type</th>
+            <td>4 x Micro-BNC (Impedance 75Ω)</td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>Card Bracket (슬롯 브라켓)</td>
+        </tr>
+        <tr>
+            <th>Instruction</th>
+            <td>CoaXPress HOST Interface</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<img src="images/connector.png" alt="CFG-X1204 Connector Layout" class="manual-img w-medium">
+<p class="img-caption">Figure 3. CXP Data Connector Layout</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Pin</th>
+            <th>Signal</th>
+            <th>Directions / Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Inner 1 ~ 4</td>
+            <td>CXP_A ~ CXP_D</td>
+            <td>CoaXPress Host Connection (CH A ~ CH D)</td>
+        </tr>
+        <tr>
+            <td>Outer 1 ~ 4</td>
+            <td>GND</td>
+            <td>System Ground (차폐 및 접지)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="sec3-4-2">3.4.2 External I/O Connector (26-Pin D-sub)</h3>
+<p>Universal I/O 및 외부 전원 출력을 위한 26-pin D-sub 커넥터 사양입니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>구분 (Item)</th>
+            <th>상세 사양 (Description)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Connector Name</th>
+            <td>External I/O Connector</td>
+        </tr>
+        <tr>
+            <th>Connector Type</th>
+            <td>26-Pin D-sub (High-density)</td>
+        </tr>
+        <tr>
+            <th>Instruction</th>
+            <td>Universal I/O & Power Output</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<img src="images/io_connector.png" alt="26-pin D-sub Connector Pinout" class="manual-img w-medium">
+<p class="img-caption">Figure 4. External I/O Connector Pin Layout</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Pin</th>
+            <th>Signal Name</th>
+            <th>Pin</th>
+            <th>Signal Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td><td>GND (System Ground)</td>
+            <td>14</td><td>IS_INPUT_3+ (Isolated)</td>
+        </tr>
+        <tr>
+            <td>2</td><td>D_INPUT_2+ (Differential)</td>
+            <td>15</td><td>IS_INPUT_4+ (Isolated)</td>
+        </tr>
+        <tr>
+            <td>3</td><td>IS_INPUT_1+ (Isolated)</td>
+            <td>16</td><td>IS_OUTPUT_2+ (Isolated)</td>
+        </tr>
+        <tr>
+            <td>4</td><td>IS_INPUT_3- (Isolated)</td>
+            <td>17</td><td>TTL_IO_2</td>
+        </tr>
+        <tr>
+            <td>5</td><td>IS_INPUT_2+ (Isolated)</td>
+            <td>18</td><td>GND (System Ground)</td>
+        </tr>
+        <tr>
+            <td>6</td><td>IS_INPUT_4- (Isolated)</td>
+            <td>19</td><td>IS_OUTPUT_1- (Isolated)</td>
+        </tr>
+        <tr>
+            <td>7</td><td>GND (System Ground)</td>
+            <td>20</td><td>IS_INPUT_5+ (Isolated)</td>
+        </tr>
+        <tr>
+            <td>8</td><td>IS_OUTPUT_2- (Isolated)</td>
+            <td>21</td><td>IS_INPUT_6+ (Isolated)</td>
+        </tr>
+        <tr>
+            <td>9</td><td>GND (System Ground)</td>
+            <td>22</td><td>IS_INPUT_5- (Isolated)</td>
+        </tr>
+        <tr>
+            <td>10</td><td>GND (System Ground)</td>
+            <td>23</td><td>IS_INPUT_6- (Isolated)</td>
+        </tr>
+        <tr>
+            <td>11</td><td>D_INPUT_2- (Differential)</td>
+            <td>24</td><td>GND (System Ground)</td>
+        </tr>
+        <tr>
+            <td>12</td><td>IS_INPUT_1- (Isolated)</td>
+            <td>25</td><td>TTL_IO_1</td>
+        </tr>
+        <tr>
+            <td>13</td><td>IS_INPUT_2- (Isolated)</td>
+            <td>26</td><td>+12V (External Power Output)</td>
+        </tr>
+    </tbody>
+</table>
+<h3 id="sec3-4-3">3.4.3 Auxiliary Power Connector</h3>
+<p>PoCXP(Power over CoaXPress) 기능 및 GPIO 제어를 위한 내부 전원 공급 커넥터 사양입니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>구분 (Item)</th>
+            <th>상세 사양 (Description)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Connector Name</th>
+            <td>Auxiliary Power Connector</td>
+        </tr>
+        <tr>
+            <th>Connector Type</th>
+            <td>6-pin (4.2mm Pitch)</td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>Inside of the board (보드 내부 상단)</td>
+        </tr>
+        <tr>
+            <th>Instruction</th>
+            <td>Auxiliary 12V input power for PoCXP and GPIO control</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<img src="images/power connector.png" alt="CFG-X1204 Auxiliary Power Connector" class="manual-img w-small">
+<p class="img-caption">Figure 5. Auxiliary Power Connector Layout</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Pin</th>
+            <th>Signal</th>
+            <th>Directions / Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1, 2, 3</td>
+            <td>+12V input</td>
+            <td>Auxiliary 12V Input Power (보조 전원 입력)</td>
+        </tr>
+        <tr>
+            <td>4, 5, 6</td>
+            <td>GND</td>
+            <td>System Ground (접지)</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box warning">
+    <strong>주의:</strong> PoCXP 기능을 원활하게 사용하기 위해서는 반드시 PC 파워 서플라이의 6핀 보조 전원을 이 커넥터에 연결해야 합니다.
+</div>
+<h3 id="sec3-5">3.5 LED Status Indicators</h3>
+<p>CFG-X1204 브라켓에 위치한 4개의 LED(A, B, C, D)를 통해 장치의 전원, 연결 상태 및 에러 발생 여부를 실시간으로 확인할 수 있습니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>특성 (Characteristic)</th>
+            <th>내용 (Contents)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Name</th>
+            <td>Status LED</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>Dip Type</td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>Card Bracket (외부 브라켓)</td>
+        </tr>
+        <tr>
+            <th>Instruction</th>
+            <td>Device connection status / Mode status / Warning detection</td>
+        </tr>
+    </tbody>
+</table>
+
+<img src="images/led layout.png" alt="CFG-X1204 LED Layout" class="manual-img w-medium">
+<p class="img-caption">Figure 6. Status LED (A, B, C, D) Location on Bracket</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>LED Color</th>
+            <th>Lamp Status</th>
+            <th>Definition</th>
+            <th>Directions (상세 상태 설명)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Off</td><td>Off</td><td>Off</td>
+            <td>System Off. Power is not on.</td>
+        </tr>
+        <tr>
+            <td style="color: #e67e22; font-weight: bold;">Orange</td><td>Solid orange</td><td>Host Init.</td>
+            <td>System booting. (시스템 부팅 및 초기화 중)</td>
+        </tr>
+        <tr>
+            <td style="color: #27ae60; font-weight: bold;">Green</td><td>Solid green</td><td>Waiting</td>
+            <td>Device / Host connected, but no data being transferred.</td>
+        </tr>
+        <tr>
+            <td style="color: #e67e22; font-weight: bold;">Orange</td><td>Flash 1Hz</td><td>Waiting</td>
+            <td>Device / Host connected, waiting for event (e.g. Trigger).</td>
+        </tr>
+        <tr>
+            <td style="color: #c0392b; font-weight: bold;">Red</td><td>Solid Red</td><td>Error</td>
+            <td>The PoCXP over-current protection has tripped. (과전류 보호 작동)</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;"><span style="color: #27ae60;">Green</span> / <span style="color: #e67e22;">Orange</span></td>
+            <td>Alternative Flash 5Hz</td><td>Device detect</td>
+            <td>Connection detection in progress, PoCXP active. (G:40ms / O:40ms)</td>
+        </tr>
+        <tr>
+            <td style="color: #e67e22; font-weight: bold;">Orange</td><td>Flash 10Hz</td><td>Device detect</td>
+            <td>Connection detection in progress, PoCXP not in use. (40ms On / 60ms Off)</td>
+        </tr>
+        <tr>
+            <td style="color: #27ae60; font-weight: bold;">Green</td><td>Flash 5Hz</td><td>Streaming</td>
+            <td>The Device to Host connection is established and image data is being transferred.</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;"><span style="color: #c0392b;">Red</span> / <span style="color: #27ae60;">Green</span></td>
+            <td>Alternative Flash 0.5Hz</td><td>System status</td>
+            <td>Device / Host incompatible, PoCXP active. (R:1s / G:1s)</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;"><span style="color: #c0392b;">Red</span> / <span style="color: #e67e22;">Orange</span></td>
+            <td>Alternative Flash 0.5Hz</td><td>System status</td>
+            <td>Device / Host incompatible, PoCXP not in use. (R:1s / O:1s)</td>
+        </tr>
+        <tr>
+            <td style="color: #c0392b; font-weight: bold;">Red</td><td>Flash 1Hz</td><td>System status</td>
+            <td>Error during data transfer (e.g. CRC error).</td>
+        </tr>
+        <tr>
+            <td style="color: #c0392b; font-weight: bold;">Red</td><td>Flash 10Hz</td><td>Error</td>
+            <td>Host system error (e.g. internal error).</td>
+        </tr>
+    </tbody>
+</table>
+<h2 id="sec3-6">3.6 Electrical Specification</h2>
+
+<h3 id="sec3-6-1">3.6.1 CoaXPress Host Interface</h3>
+<p>CFG-X1204의 CoaXPress 인터페이스 데이터 비트 레이트 사양입니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Condition</th>
+            <th>Min.</th>
+            <th>Typ.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>High-speed connection bit rate</td>
+            <td>-</td>
+            <td>1.25</td>
+            <td>-</td>
+            <td>12.5</td>
+            <td>GT/s</td>
+        </tr>
+        <tr>
+            <td rowspan="2">Low-speed connection bit rate</td>
+            <td>1.25GT/s ~ 6.25GT/s</td>
+            <td>-</td>
+            <td>20.833</td>
+            <td>-</td>
+            <td>MT/s</td>
+        </tr>
+        <tr>
+            <td>10.0GT/s ~ 12.5GT/s</td>
+            <td>-</td>
+            <td>41.666</td>
+            <td>-</td>
+            <td>MT/s</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="sec3-6-2">3.6.2 Power Transmitting Unit</h3>
+<p>PoCXP를 통한 카메라 전원 공급 사양입니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Min.</th>
+            <th>Typ.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>DC Output voltage</td>
+            <td>22.5</td>
+            <td>24</td>
+            <td>25.5</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>Available output power</td>
+            <td>16</td>
+            <td>-</td>
+            <td>-</td>
+            <td>W</td>
+        </tr>
+        <tr>
+            <td>OCP Holding current</td>
+            <td>810</td>
+            <td>-</td>
+            <td>-</td>
+            <td>mA</td>
+        </tr>
+        <tr>
+            <td>OCP nominal trip current</td>
+            <td>-</td>
+            <td>-</td>
+            <td>5</td>
+            <td>A</td>
+        </tr>
+        <tr>
+            <td>PoCXP Device detection sensing current</td>
+            <td>1</td>
+            <td>-</td>
+            <td>1500</td>
+            <td>mA</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box note">
+    <ul>
+        <li>과전류 보호(OCP, Over-current protection) 회로가 내장되어 있습니다.</li>
+        <li>PoCXP 장치 감지 기능과 함께 사용자가 직접 전원을 제어할 수 있는 AUTO/OFF Control(>1.5A) 기능을 제공합니다.</li>
+    </ul>
+</div>
+
+<h3 id="sec3-6-3">3.6.3 PCI Express Interface</h3>
+<p>호스트 PC와의 데이터 전송 대역폭 사양입니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Condition</th>
+            <th>Min.</th>
+            <th>Typ.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="4">Sustainable output data rate</td>
+            <td>8-Lane @ 8 GT/s (Gen 3)</td>
+            <td>-</td>
+            <td>6,700</td>
+            <td>-</td>
+            <td>MB/s</td>
+        </tr>
+        <tr>
+            <td>4-Lane @ 8 GT/s (Gen 3)</td>
+            <td>-</td>
+            <td>3,350</td>
+            <td>-</td>
+            <td>MB/s</td>
+        </tr>
+        <tr>
+            <td>2-Lane @ 8 GT/s (Gen 3)</td>
+            <td>-</td>
+            <td>1,700</td>
+            <td>-</td>
+            <td>MB/s</td>
+        </tr>
+        <tr>
+            <td>1-Lane @ 8 GT/s (Gen 3)</td>
+            <td>-</td>
+            <td>800</td>
+            <td>-</td>
+            <td>MB/s</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box note">
+    <ul>
+        <li>PCI Express Card Electromechanical specification Revision 3.0을 준수합니다.</li>
+        <li>1, 2, 4, 8-lane 링크 모두 지원합니다.</li>
+        <li>PCI-E Rev 3.0 링크 속도(128b/130b 코딩 방식의 8.0 GT/s)를 지원합니다.</li>
+    </ul>
+</div><h3 id="sec3-6-4">3.6.4 PCI Express Power Interface</h3>
+<p>PCI Express 슬롯을 통해 공급되는 전력 사양입니다. 최대 대역폭 및 속도로 작동할 때의 전력 소모량을 기준으로 작성되었습니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Min.</th>
+            <th>Typ.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>3.3V Voltage</td>
+            <td>3</td>
+            <td>3.3</td>
+            <td>3.6</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>12V Voltage</td>
+            <td>11</td>
+            <td>12</td>
+            <td>13</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>3.3V Power</td>
+            <td>-</td>
+            <td>3.8</td>
+            <td>-</td>
+            <td>W</td>
+        </tr>
+        <tr>
+            <td>12V Power</td>
+            <td>-</td>
+            <td>13</td>
+            <td>-</td>
+            <td>W</td>
+        </tr>
+        <tr>
+            <td>Total Power</td>
+            <td>-</td>
+            <td>16.8</td>
+            <td>-</td>
+            <td>W</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="sec3-6-5">3.6.5 Power specification</h3>
+<p>CFG-X1204의 전체 전원 및 입출력 전력 사양입니다. 본 사양은 전체 작동 온도 범위 내에서 유효합니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Condition</th>
+            <th>Min.</th>
+            <th>Typ.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>DC input Voltage</td>
+            <td>-</td>
+            <td>11</td>
+            <td>12</td>
+            <td>13</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>DC input Power for I/O</td>
+            <td>12W I/O output power</td>
+            <td>-</td>
+            <td>-</td>
+            <td>12</td>
+            <td>W</td>
+        </tr>
+        <tr>
+            <td rowspan="3">DC input power for PoCXP</td>
+            <td>16.8W Total PoCXP output power</td>
+            <td>-</td>
+            <td>-</td>
+            <td>18</td>
+            <td>W</td>
+        </tr>
+        <tr>
+            <td>33.6W Total PoCXP output power</td>
+            <td>-</td>
+            <td>-</td>
+            <td>36</td>
+            <td>W</td>
+        </tr>
+        <tr>
+            <td>67.2W Total PoCXP output power</td>
+            <td>-</td>
+            <td>-</td>
+            <td>72</td>
+            <td>W</td>
+        </tr>
+        <tr>
+            <td>DC/DC input voltage</td>
+            <td>-</td>
+            <td>11</td>
+            <td>12</td>
+            <td>13</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>DC/DC output voltage</td>
+            <td>-</td>
+            <td>23</td>
+            <td>24</td>
+            <td>25</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>DC/DC Power conversion efficiency</td>
+            <td>72W Total PoCXP output power</td>
+            <td>90</td>
+            <td>-</td>
+            <td>-</td>
+            <td>%</td>
+        </tr>
+        <tr>
+            <td>Aggregated I/O Power Current</td>
+            <td>Operating temperature range</td>
+            <td>-</td>
+            <td>-</td>
+            <td>1</td>
+            <td>A</td>
+        </tr>
+        <tr>
+            <td>I/O Voltage drop across electronic fuse</td>
+            <td>Max output current (< 1.1A)</td>
+            <td>-</td>
+            <td>-</td>
+            <td>0.2</td>
+            <td>V</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box note">
+    <strong>참고:</strong> 위 전원 사양은 CFG-X1204 카드가 모든 CoaXPress 채널을 최대 속도로 사용할 때를 기준으로 측정되었습니다.
+</div>
+<h3 id="sec3-6-6">3.6.6 Differential Input</h3>
+<p>CFG-X1204의 차동 입력(Differential Input) 회로 구성 및 전기적 특성입니다.</p>
+
+<img src="images/differential input.png" alt="Differential Input Simplified Schematic" class="manual-img w-large">
+<p class="img-caption">Figure 7. Differential Input Simplified Schematic</p>
+
+<h4>Characteristics</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Condition</th>
+            <th>Min.</th>
+            <th>Typ.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Common mode input Voltage</td>
+            <td>-</td>
+            <td>-7</td>
+            <td>-</td>
+            <td>7</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>Differential sensitivity</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>200</td>
+            <td>mV</td>
+        </tr>
+        <tr>
+            <td>Input impedance</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100</td>
+            <td>-</td>
+            <td>Ohm</td>
+        </tr>
+        <tr>
+            <td rowspan="3">ESD protection</td>
+            <td>Human body Model (HBM)</td>
+            <td>15</td>
+            <td>-</td>
+            <td>-</td>
+            <td>KV</td>
+        </tr>
+        <tr>
+            <td>Contact discharge</td>
+            <td>8</td>
+            <td>-</td>
+            <td>-</td>
+            <td>KV</td>
+        </tr>
+        <tr>
+            <td>Air gap discharge</td>
+            <td>15</td>
+            <td>-</td>
+            <td>-</td>
+            <td>KV</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box note">
+    <ul>
+        <li>ANSI/EIA/TIA-422/485 차동 라인 드라이버와 호환됩니다.</li>
+        <li>보완형 TTL 드라이버(Complementary TTL drivers)를 지원합니다.</li>
+    </ul>
+</div>
+<h3 id="sec3-6-7">3.6.7 TTL I/O</h3>
+<p>CFG-X1204의 TTL 입출력 회로 구성 및 논리 레벨 사양입니다. 리시버는 3.3V LVTTL 및 5V TTL과 호환되며, 드라이버는 3.3V TTL 드라이버로 동작합니다.</p>
+
+<img src="images/ttl_io_schematic.png" alt="TTL I/O Simplified Schematic" class="manual-img w-large">
+<p class="img-caption">Figure 8. TTL I/O Simplified Schematic</p>
+
+<h4>Characteristics</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Condition</th>
+            <th>Min.</th>
+            <th>Typ.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Common mode input Voltage</td>
+            <td>-</td>
+            <td>0</td>
+            <td>-</td>
+            <td>5</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>Low-level output current</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>64</td>
+            <td>mA</td>
+        </tr>
+        <tr>
+            <td>High-level output current</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-32</td>
+            <td>mA</td>
+        </tr>
+        <tr>
+            <td rowspan="2">High-level output voltage</td>
+            <td>-8mA</td>
+            <td>2.3</td>
+            <td>-</td>
+            <td>-</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>-32mA</td>
+            <td>1.6</td>
+            <td>-</td>
+            <td>-</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>ESD protection</td>
+            <td>Human body Model (HBM)</td>
+            <td>2</td>
+            <td>-</td>
+            <td>-</td>
+            <td>KV</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Logical Map</h4>
+<table style="max-width: 500px;">
+    <thead>
+        <tr>
+            <th>Input Voltage</th>
+            <th>Logical Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Vin &gt; 2.0V</td>
+            <td><strong>HIGH</strong></td>
+        </tr>
+        <tr>
+            <td>Vin &lt; 0.8V</td>
+            <td><strong>LOW</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box note">
+    <strong>호환성 안내:</strong>
+    <ul>
+        <li><strong>호환 드라이버:</strong> Totem-pole LVTTL, TTL, 5V CMOS 드라이버</li>
+        <li><strong>호환 리시버:</strong> LVTTL, TTL, 3V CMOS 리시버</li>
+    </ul>
+</div>
+
+<h3 id="sec3-6-8">3.6.8 Isolated Input</h3>
+<p>CFG-X1204의 절연 입력(Isolated Input) 회로 구성 및 사양입니다. 광절연(Opto-isolated) 방식을 통해 외부 노이즈로부터 내부 시스템을 보호합니다.</p>
+
+<img src="images/isolated_input_schematic.png" alt="Isolated Input Simplified Schematic" class="manual-img w-large">
+<p class="img-caption">Figure 9. Isolated Input Simplified Schematic</p>
+
+<h4>Characteristics</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Min.</th>
+            <th>Typ.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Differential voltage</td>
+            <td>-24</td>
+            <td>-</td>
+            <td>24</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>Input current threshold</td>
+            <td>-</td>
+            <td>5</td>
+            <td>-</td>
+            <td>mA</td>
+        </tr>
+        <tr>
+            <td>Input current</td>
+            <td>-</td>
+            <td>-</td>
+            <td>50</td>
+            <td>mA</td>
+        </tr>
+        <tr>
+            <td>DC isolation voltage</td>
+            <td>-</td>
+            <td>-</td>
+            <td>250</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>AC isolation voltage</td>
+            <td>-</td>
+            <td>-</td>
+            <td>150</td>
+            <td>Vrms</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box note">
+    <strong>참고:</strong> 외부 I/O 커넥터(26-pin D-sub)의 26번 핀에서 제공되는 +12V 전원을 사용하여 전원이 필요한 드라이버 회로를 구동할 수 있습니다.
+</div>
+
+<h3 id="sec3-6-9">3.6.9 Isolated Output</h3>
+<p>CFG-X1204의 절연 출력(Isolated Output) 회로 구성 및 사양입니다. 출력 포트는 어플리케이션의 제어를 받기 전까지 OFF 상태를 유지하며, 광절연 방식을 통해 외부 장치와의 전기적 간섭을 차단합니다.</p>
+
+<img src="images/isolated_output_schematic.png" alt="Isolated Output Simplified Schematic" class="manual-img w-large">
+<p class="img-caption">Figure 10. Isolated Output Simplified Schematic</p>
+
+<h4>Characteristics</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Condition</th>
+            <th>Min.</th>
+            <th>Typ.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Current</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100</td>
+            <td>mA</td>
+        </tr>
+        <tr>
+            <td rowspan="2">Differential voltage</td>
+            <td>Open state</td>
+            <td>-24</td>
+            <td>-</td>
+            <td>24</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>Close state @ 1mA</td>
+            <td>-</td>
+            <td>-</td>
+            <td>0.4</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>DC isolation voltage</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>250</td>
+            <td>V</td>
+        </tr>
+        <tr>
+            <td>AC isolation voltage</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>170</td>
+            <td>Vrms</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box warning">
+    <strong>중요 주의사항:</strong>
+    <ul>
+        <li>닫힌 상태(Closed state)의 출력 포트에는 전류 제한기(Current Limiter)가 포함되어 있지 않습니다.</li>
+        <li>출력 포트의 파손을 방지하기 위해 과도한 전류가 흐르지 않도록 사용자 회로를 설계해야 합니다.</li>
+        <li>출력 포트는 어플리케이션에 의해 제어되기 전까지 기본적으로 OFF 상태를 유지합니다.</li>
+    </ul>
+</div>
+<h2 id="sec4">4. Environmental condition</h2>
+<p>CFG-X1204의 안정적인 성능 유지와 장치 수명 보전을 위한 환경 조건 사양입니다.</p>
+
+<h3 id="sec4-1">4.1 Storage Condition</h3>
+<p>장치를 사용하지 않고 보관할 때 준수해야 하는 환경 조건입니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Condition</th>
+            <th>Min.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Ambient air temperature</td>
+            <td>-</td>
+            <td>-20 [-4]</td>
+            <td>60 [140]</td>
+            <td>°C [°F]</td>
+        </tr>
+        <tr>
+            <td>Ambient air humidity</td>
+            <td>Non-condensing</td>
+            <td>10</td>
+            <td>80</td>
+            <td>%RH</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="sec4-2">4.2 Operating Condition</h3>
+<p>장치가 정상적으로 작동하기 위해 반드시 유지되어야 하는 환경 조건입니다.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Condition</th>
+            <th>Min.</th>
+            <th>Max.</th>
+            <th>Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>FPGA die temperature</td>
+            <td>-</td>
+            <td>-</td>
+            <td>80 [176]</td>
+            <td>°C [°F]</td>
+        </tr>
+        <tr>
+            <td>Ambient air temperature</td>
+            <td>-</td>
+            <td>0 [32]</td>
+            <td>50 [122]</td>
+            <td>°C [°F]</td>
+        </tr>
+        <tr>
+            <td>Ambient air humidity</td>
+            <td>Non-condensing</td>
+            <td>0</td>
+            <td>90</td>
+            <td>%RH</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="box danger">
+    <strong>중요 (Important):</strong>
+    <ul>
+        <li>호스트 PC의 열 설계는 어떤 상황에서도 FPGA 다이 온도가 권장 한계치(80°C)를 초과하지 않도록 보장해야 합니다.</li>
+        <li>FPGA 다이 온도의 상한선을 초과할 경우 카드가 영구적으로 손상될 수 있습니다.</li>
+    </ul>
+</div>
+
+<div class="box note">
+    <strong>알림 (Notice):</strong>
+    <ul>
+        <li>CFG-X1204에는 FPGA 다이 온도를 실시간으로 보고하는 온도 센서가 장착되어 있습니다.</li>
+        <li>FPGA 다이 온도가 한계치에 도달하면 어플리케이션에 이벤트가 보고되며, 시스템 보호를 위해 장치가 자동으로 셧다운(Shutdown)됩니다.</li>
+    </ul>
+</div>
+
+<h2 id="sec5">5. System Setup & Compliance</h2>
+<p>CFG-X1204의 최적 성능 발휘를 위한 시스템 설정, 케이블 가이드 및 규격 준수 사항입니다.</p>
+
+<h3 id="sec5-1">5.1 Software Integration</h3>
+<p>CFG-X1204는 GenICam 표준을 준수하며 다양한 비전 라이브러리와 호환됩니다.</p>
+<ul>
+    <li><strong>SDK 지원:</strong> 크래비스(Crevis)에서 제공하는 전용 드라이버 및 SDK를 통해 장치를 제어할 수 있습니다. </li>
+    <li><strong>OS 호환성:</strong> Windows 10/11 (64-bit) 및 Linux 환경을 지원합니다.</li>
+    <li><strong>서드파티 호환:</strong> MIL, Halcon, LabVIEW 등 주요 비전 소프트웨어와 GenTL을 통해 직접 연동이 가능합니다. </li>
+</ul>
+
+<h3 id="sec5-2">5.2 Cable Specification & Distance</h3>
+<p>CoaXPress 2.1의 고속 데이터 전송을 위해 전용 75Ω 케이블 사용을 권장합니다.</p>
+<table>
+    <thead>
+        <tr>
+            <th>Link Speed</th>
+            <th>Standard</th>
+            <th>Max. Distance (Typical)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>6.25 Gbps</td>
+            <td>CXP-6</td>
+            <td>Up to 100m</td>
+        </tr>
+        <tr>
+            <td>12.5 Gbps</td>
+            <td>CXP-12</td>
+            <td>Up to 40m</td>
+        </tr>
+    </tbody>
+</table>
+<div class="box caution">
+    <strong>참고:</strong> 전송 거리는 사용되는 케이블의 품질(Belden 등)과 주변 전자기 간섭 환경에 따라 달라질 수 있습니다. 
+</div>
+
+<h3 id="sec5-3">5.3 PCIe Slot & BIOS Settings</h3>
+<p>호스트 PC와의 인식률을 높이기 위한 권장 설정입니다.</p>
+<ul>
+    <li><strong>Slot Selection:</strong> 성능 저하를 방지하기 위해 최소 PCI Express Gen3 x8 이상의 대역폭을 보장하는 슬롯에 장착하십시오. </li>
+    <li><strong>Above 4G Decoding:</strong> 시스템에서 보드가 정상적으로 인식되지 않을 경우, 메인보드 BIOS 설정에서 'Above 4G Decoding' 항목을 <strong>Enabled</strong>로 설정하십시오.</li>
+    <li><strong>Link Speed:</strong> BIOS의 PCIe Speed 설정을 <strong>Auto</strong> 또는 <strong>Gen3</strong>로 고정할 것을 권장합니다. </li>
+</ul>
+
+<h3 id="sec5-4">5.4 Camera Connection Topology</h3>
+<p>CFG-X1204는 카메라의 사양에 따라 다양한 연결 방식을 지원합니다.</p>
+
+<div class="manual-img w-medium">
+    <svg width="100%" height="100%" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+      <rect width="600" height="400" fill="#ffffff" />
+      <rect x="20" y="50" width="100" height="300" rx="5" fill="#2c3e50" />
+      <text x="70" y="40" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">CFG-X1204</text>
+      <circle cx="90" cy="100" r="12" fill="#bdc3c7" /> <text x="45" y="105" font-family="Arial" font-size="12">CH A</text>
+      <circle cx="90" cy="170" r="12" fill="#bdc3c7" /> <text x="45" y="175" font-family="Arial" font-size="12">CH B</text>
+      <circle cx="90" cy="240" r="12" fill="#bdc3c7" /> <text x="45" y="245" font-family="Arial" font-size="12">CH C</text>
+      <circle cx="90" cy="310" r="12" fill="#bdc3c7" /> <text x="45" y="315" font-family="Arial" font-size="12">CH D</text>
+      <rect x="350" y="80" width="180" height="60" rx="3" fill="#e67e22" fill-opacity="0.1" stroke="#e67e22" stroke-width="2" />
+      <text x="440" y="115" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">4-Lane Camera</text>
+      <path d="M 102 100 L 350 110 M 102 170 L 350 110 M 102 240 L 350 110 M 102 310 L 350 110" stroke="#e67e22" stroke-width="2" fill="none" />
+      <rect x="350" y="190" width="180" height="40" rx="3" fill="#27ae60" fill-opacity="0.1" stroke="#27ae60" stroke-width="2" />
+      <text x="440" y="215" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">2-Lane Camera</text>
+      <path d="M 102 240 L 350 210 M 102 310 L 350 210" stroke="#27ae60" stroke-width="2" fill="none" />
+      <rect x="350" y="280" width="180" height="40" rx="3" fill="#2980b9" fill-opacity="0.1" stroke="#2980b9" stroke-width="2" />
+      <text x="440" y="305" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">1-Lane Camera</text>
+      <path d="M 102 310 L 350 300" stroke="#2980b9" stroke-width="2" fill="none" />
+    </svg>
+</div>
+
+<p class="img-caption">Figure 11. Camera Connection Configurations</p>
+<table>
+    <thead>
+        <tr>
+            <th>Configuration</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1-Lane Camera</td>
+            <td>최대 4대의 카메라를 독립적으로 연결 가능합니다. </td>
+        </tr>
+        <tr>
+            <td>2-Lane Camera</td>
+            <td>최대 2대의 카메라를 연결 가능합니다. (CH A/B, CH C/D) </td>
+        </tr>
+        <tr>
+            <td>4-Lane Camera</td>
+            <td>1대의 고해상도 카메라를 연결하여 최대 대역폭을 사용합니다. </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="sec5-5">5.5 Compliance & Certifications</h3>
+<p>CFG-X1204는 다음 글로벌 인증 규격을 준수하여 설계되었습니다.</p>
+<ul>
+    <li><strong>KC 인증:</strong> 산업용 전자기 적합성 인증 획득.</li>
+    <li><strong>RoHS:</strong> 환경 유해 물질 제한 지침 준수.</li>
+    <li><strong>CoaXPress 2.1:</strong> JIIA(Japan Industrial Imaging Association) 표준 준수. </li>
+</ul>
+
+        <footer>
+            <p>Copyright 2026 Crevis Co., Ltd. All rights reserved.</p>
+            <p>29-4, Gigok-ro, Giheung-gu, Yongin-si, Gyeonggi-do, Korea</p>
+        </footer>
+    </main>
+
+</body>
+</html>
